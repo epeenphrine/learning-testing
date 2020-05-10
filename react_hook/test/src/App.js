@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import Testing from './components/Testing'
+
 function App() {
+  const [something, setSomething] = useState(
+    {
+      text: "hello this is working",
+      status: true
+
+    }
+  )
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Testing
+        text={something.text}
+        status={something.status}
+        setSomething={setSomething}
+      />
+      <button onClick={() => setSomething({
+        text: "you clicked this in the parent component "
+      })}>this is the button in parent component</button>
     </div>
   );
 }
