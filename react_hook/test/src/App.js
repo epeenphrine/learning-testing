@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 import Testing from './components/Testing'
-
+import Navbar from './components/Navbar'
 function App() {
   const [something, setSomething] = useState(
     {
@@ -12,8 +12,28 @@ function App() {
 
     }
   )
+  const [TweetApi, setTweetApi] = useState(
+    {
+      data: []
+    }
+  )
+
+  async function getAPI() {
+
+    const response = await fetch('')
+      .then(res => res.json())
+    setTweetApi({
+      data: response
+    })
+    console.log(response)
+  }
+  useEffect(() => {
+    getAPI()
+  }, [])
+  //console.log(TweetApi.data)
   return (
     <div className="App">
+      <Navbar />
       <Testing
         text={something.text}
         status={something.status}
