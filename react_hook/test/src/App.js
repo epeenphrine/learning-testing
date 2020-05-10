@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import Testing from './components/Testing'
+
+import TestingUseEffect from './components/TestingUseEffect'
+import Testing from './components/TestingProps'
+import TestingReducer from './components/TestingReducer'
 import Navbar from './components/Navbar'
+
+
 function App() {
   const [something, setSomething] = useState(
     {
@@ -17,11 +22,10 @@ function App() {
       data: []
     }
   )
-
+  
   async function getAPI() {
-
-    const response = await fetch('')
-      .then(res => res.json())
+    const response = await fetch(`${process.env.REACT_APP_NEETCODE_API}`)
+      .then(res => res.json()).catch(() => console.log("can't get api"))
     setTweetApi({
       data: response
     })
@@ -42,6 +46,8 @@ function App() {
       <button onClick={() => setSomething({
         text: "you clicked this in the parent component "
       })}>this is the button in parent component</button>
+      <TestingReducer />
+      <TestingUseEffect />
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import React from 'react'
 
+
+//handling props
 export default function Testing(props) {
     return (
         <div>
@@ -8,7 +10,7 @@ export default function Testing(props) {
                 {props.text}
             </div>
             <button onClick={() => props.setSomething({
-                text: "you clicked it man"
+                text: "from child"
             })}>setsomething button in child component</button>
         </div>
 
