@@ -1,4 +1,6 @@
 # %%
+import random
+from nltk.corpus import movie_reviews
 from nltk.corpus import wordnet
 from nltk.corpus import gutenberg
 from nltk.tokenize import sent_tokenize, PunktSentenceTokenizer
@@ -12,7 +14,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 
-#useful
+# useful
 # tokenizing. split based on setence, words, or paragraphs
 example_text = "hello this is me, how are you today? i'm doing ok"
 
@@ -39,7 +41,7 @@ filtered_sentence = [w for w in word_tokens if not w in stop_words]
 print(filtered_sentence)
 
 # %% stemming. making words with same meaning the same write, writing, writetn, and etc...
-#useful
+# useful
 ps = PorterStemmer()
 example_words = ["python", "pythoner", "pythoning", "pythoned", "pythonly"]
 
@@ -54,7 +56,7 @@ for w in words:
 
 
 # %% speech tagging. words and their meaning meaning
-#useful
+# useful
 
 train_text = state_union.raw("2005-GWBush.txt")
 sample_text = state_union.raw("2006-GWBush.txt")
@@ -101,7 +103,7 @@ def process_content():
 process_content()
 
 # %% chinking. removing chunks from the chunks above
-#useful
+# useful
 train_text = state_union.raw("2005-GWBush.txt")
 sample_text = state_union.raw("2006-GWBush.txt")
 
@@ -130,7 +132,7 @@ def process_content():
 process_content()
 
 # %% named entitiy recognition. A form of chunking, use NLTK to label chunks by people, places, locations
-#useful
+# useful
 
 train_text = state_union.raw("2005-GWBush.txt")
 sample_text = state_union.raw("2006-GWBush.txt")
@@ -241,8 +243,8 @@ print("\n")
 print(antonyms)
 
 
-#%% using wordnet to compare the noun of "ship" and "boat"  
-## useful
+# %% using wordnet to compare the noun of "ship" and "boat"
+# useful
 
 w1 = wordnet.synset("ship.n.01")
 w2 = wordnet.synset("boat.n.01")
@@ -252,21 +254,18 @@ w4 = wordnet.synset("cat.n.01")
 print(w1.wup_similarity(w2))
 print(w1.wup_similarity(w3))
 print(w1.wup_similarity(w4))
-# %% text classification. Some sentiment analysis 
+# %% text classification. count common words / find count of specific words
 
-import nltk
-import random 
-from nltk.corpus import movie_reviews
 
 documents = [(list(movie_reviews.words(fileid)), category)
              for category in movie_reviews.categories()
              for fileid in movie_reviews.fileids(category)]
 
-#print(documents)
+# print(documents)
 
 random.shuffle(documents)
 
-#print(documents[1])
+# print(documents[1])
 
 all_words = []
 
@@ -276,5 +275,119 @@ for w in movie_reviews.words():
 all_words = nltk.FreqDist(all_words)
 
 # get 15 most common used words
-print(all_words.most_common(15))
-print(all_words["stupid"])
+print(f"{all_words.most_common(15)}")
+print(f'amount of words with stupid: {all_words["stupid"]}')
+
+# %% words to features. Categorizing words to negative or positive depending on which review it was coming from.
+
+import nltk 
+import random
+from nltk.corpus import movie_reviews
+
+
+documents = [(list(movie_reviews.words(fileid)), category)
+             for category in movie_reviews.categories()
+             for fileid in movie_reviews.fileids(category)
+             ]
+random.shuffle(documents)
+
+all_words = []
+
+#print(documents)
+
+for w in movie_reviews.words():
+    all_words.append(w.lower())
+## most frequent word to least frequent
+all_words = nltk.FreqDist(all_words)
+
+#print(all_words)
+
+word_features = list(all_words.keys())[:3000]
+
+def find_features(document):
+    words = set(document)
+    features = {}
+    for w in word_features:
+        features[w] =(w in words)
+    return features
+
+#print((find_features(movie_reviews.words('neg/cv000_29416.txt'))))
+
+featuresets = [(find_features(rev), category) for (rev, category) in documents]
+
+##naive bayes classifier
+
+# set for training classsifier
+training_set = featuresets[:1900]
+# set for testing against 
+testing_set = featuresets[1900:]
+
+classifier = nltk.NaiveBayesClassifier.train(training_set)
+
+print(f"Classifier accuracy percent: {nltk.classify.accuracy(classifier, testing_set)*100}")
+
+classifier.show_most_informative_features(15)
+
+# %% save classifiers using pickle
+import pickle
+
+##save_classifier = open("naivebayes.pickle", "wb") 
+##pickle.dump(classifier, save_classifier)
+##save_classifier.close()
+
+classifier_f = open("naivebayes.pickle", "rb")
+classifier = pickle.load(classifier_f)
+classifier.show_most_informative_features(15)
+classifier_f.close()
+
+# %% sklearn with nltk
+
+from nltk.classify.scikitlearn import SklearnClassifier
+from sklearn.naive_bayes import MultinomialNB, BernoulliNB
+from sklearn.linear_model import LogisticRegression,SGDClassifier
+from sklearn.svm import SVC, LinearSVC, NuSVC
+
+print("Original Naive Bayes Algo accuracy percent:", (nltk.classify.accuracy(classifier, testing_set))*100)
+classifier.show_most_informative_features(15)
+
+MNB_classifier = SklearnClassifier(MultinomialNB())
+MNB_classifier.train(training_set)
+print("MNB_classifier accuracy percent:", (nltk.classify.accuracy(MNB_classifier, testing_set))*100)
+
+BernoulliNB_classifier = SklearnClassifier(BernoulliNB())
+BernoulliNB_classifier.train(training_set)
+print("BernoulliNB_classifier accuracy percent:", (nltk.classify.accuracy(BernoulliNB_classifier, testing_set))*100)
+
+LogisticRegression_classifier = SklearnClassifier(LogisticRegression())
+LogisticRegression_classifier.train(training_set)
+print("LogisticRegression_classifier accuracy percent:", (nltk.classify.accuracy(LogisticRegression_classifier, testing_set))*100)
+
+SGDClassifier_classifier = SklearnClassifier(SGDClassifier())
+SGDClassifier_classifier.train(training_set)
+print("SGDClassifier_classifier accuracy percent:", (nltk.classify.accuracy(SGDClassifier_classifier, testing_set))*100)
+
+SVC_classifier = SklearnClassifier(SVC())
+SVC_classifier.train(training_set)
+print("SVC_classifier accuracy percent:", (nltk.classify.accuracy(SVC_classifier, testing_set))*100)
+
+LinearSVC_classifier = SklearnClassifier(LinearSVC())
+LinearSVC_classifier.train(training_set)
+print("LinearSVC_classifier accuracy percent:", (nltk.classify.accuracy(LinearSVC_classifier, testing_set))*100)
+
+NuSVC_classifier = SklearnClassifier(NuSVC())
+NuSVC_classifier.train(training_set)
+print("NuSVC_classifier accuracy percent:", (nltk.classify.accuracy(NuSVC_classifier, testing_set))*100)
+# %% combining algorithms
+from nltk.classify import ClassifierI
+from statistics import mode
+
+class VoteClassifier(ClassifierI):
+    def __init__(self, *classifiers):
+        self._classifiers = classifiers
+
+    def classify(self, features):
+        votes = []
+        for c in self._classifiers:
+            v = c.classify(features)
+            votes.append(v)
+        return mode(votes)
