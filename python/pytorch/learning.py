@@ -212,8 +212,10 @@ class DogVsCats():
                             self.catcount += 1
                         elif label == self.DOGS:
                             self.dogcount += 1
+
                 except Exception as e:
                     pass
+
         np.random.shuffle(self.training_data)
         np.save("training_Data.npy", self.training_data)
 
