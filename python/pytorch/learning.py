@@ -180,7 +180,7 @@ with torch.no_grad():
 print("Accuracy: ", round(correct/total, 3))
 
 #%% convol nn
-
+## pre procesing. Flatten image, make it smaller,
 import os
 import cv2
 import numpy as np
@@ -217,10 +217,17 @@ class DogVsCats():
                     pass
 
         np.random.shuffle(self.training_data)
-        np.save("training_Data.npy", self.training_data)
+        np.save("training_data.npy", self.training_data)
 
 if REBUILD_DATA:
     dogsvscats = DogVsCats()
     dogsvscats.make_training_data()
     print("CATS:", dogsvscats.catcount)
     print("DOGS: ", dogsvscats.dogcount)
+
+#%% split into x and y and convert to tensor
+import torch 
+
+training_data = np.load("training_data.npy",allow_pickle=True)
+#print(training_data[0][0])
+X = torch.Tensor(i[0] for i in training_data).view(-1,50,50)
