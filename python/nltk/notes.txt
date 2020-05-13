@@ -1,0 +1,1 @@
+probably use nltk to process texts. removing characters like ## &&  and non real words like yeet
