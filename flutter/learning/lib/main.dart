@@ -28,7 +28,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Example App'),
+        title: Text('Flutter App'),
       ),
       body: Column(
         //main axis top to bottom alignment
@@ -79,6 +79,7 @@ class MyHomePage extends StatelessWidget {
                   style: TextStyle(
                     color:Colors.grey
                   )),
+                  Text("hello this is another text")
                 ])
               ]));
             }).toList(),
