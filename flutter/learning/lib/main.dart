@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; //package for formatting date to more human redable format 
+import 'package:intl/intl.dart'; //package for formatting date to more human redable format
 
 import './transaction.dart';
 
@@ -22,6 +22,8 @@ class MyHomePage extends StatelessWidget {
     Transaction(
         id: 't1', title: "new shoes", amount: 420.00, date: DateTime.now()),
     Transaction(
+        id: 't3', title: "something", amount: 555.00, date: DateTime.now()),
+    Transaction(
         id: "t2", title: "gucci belt", amount: 69.00, date: DateTime.now())
   ];
   @override
@@ -32,7 +34,7 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Column(
         //main axis top to bottom alignment
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //mainAxisAlignment: MainAxisAlignment.spaceAround,
         //cross axis left to right alignment
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -40,8 +42,23 @@ class MyHomePage extends StatelessWidget {
               width: double.infinity,
               child: Card(
                 color: Colors.blue,
-                child: Text('CHART!'),
+                child: Text('where chart will go!'),
                 elevation: 5,
+              )),
+          Card(
+              elevation: 5,
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    TextField(decoration: InputDecoration(labelText: "Ttitle"),),
+                    TextField(decoration: InputDecoration(labelText: "Amount"),),
+                    FlatButton(child: Text("add transaction"),
+                    textColor: Colors.green,
+                    onPressed: () {},)
+                  ],
+                ),
               )),
           //dynamic rendering mapping lists
           Column(
@@ -59,15 +76,14 @@ class MyHomePage extends StatelessWidget {
                       width: 2,
                     )),
                     padding: EdgeInsets.all(10),
-                    child: Text(
-                      "\$${transaction.amount.toString()}" ,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20, 
-                        color: Colors.purple,
-                      )
-                    )),
+                    child: Text("\$${transaction.amount.toString()}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.purple,
+                        ))),
                 Column(
+<<<<<<< HEAD
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                   Text(transaction.title,
@@ -81,6 +97,17 @@ class MyHomePage extends StatelessWidget {
                   )),
                   Text("hello this is another text")
                 ])
+=======
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(transaction.title,
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(DateFormat.yMMMd().format(transaction.date),
+                          style: TextStyle(color: Colors.grey)),
+                      Text("sample text"),
+                      Text("another sample text")
+                    ])
+>>>>>>> 1a10190003461cbadec934286617a8da07cbab5b
               ]));
             }).toList(),
           )
