@@ -48,7 +48,9 @@ function App() {
       })}>this is the button in parent component</button>
       <TestingReducer />
       <TestingUseEffect />
+
     </div>
+
   );
 }
 
