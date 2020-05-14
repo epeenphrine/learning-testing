@@ -6,8 +6,8 @@ import './App.css';
 import TestingUseEffect from './components/TestingUseEffect'
 import Testing from './components/TestingProps'
 import TestingReducer from './components/TestingReducer'
+import TestingUseContext from './components/TestingUseContext'
 import Navbar from './components/Navbar'
-
 
 function App() {
   const [something, setSomething] = useState(
@@ -48,7 +48,7 @@ function App() {
       })}>this is the button in parent component</button>
       <TestingReducer />
       <TestingUseEffect />
-
+      <TestingUseContext />
     </div>
 
   );

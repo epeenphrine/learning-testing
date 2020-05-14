@@ -26,6 +26,12 @@ class MyHomePage extends StatelessWidget {
     Transaction(
         id: "t2", title: "gucci belt", amount: 69.00, date: DateTime.now())
   ];
+
+  //String titleInput;
+  //String amountInput;
+
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,11 +58,32 @@ class MyHomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    TextField(decoration: InputDecoration(labelText: "Ttitle"),),
-                    TextField(decoration: InputDecoration(labelText: "Amount"),),
-                    FlatButton(child: Text("add transaction"),
-                    textColor: Colors.green,
-                    onPressed: () {},)
+                    TextField(
+                      decoration: InputDecoration(labelText: "Title"),
+                      controller: titleController,
+                      //onChanged: (value) {
+                      //titleInput = value;
+                      //},
+                    ),
+                    TextField(
+                      decoration: InputDecoration(labelText: "Amount"),
+                      controller: amountController,
+                      //onChanged: (value) {
+                      //amountInput = value;
+                      //},
+                    ),
+                    FlatButton(
+                      child: Text("add transaction"),
+                      textColor: Colors.green,
+                      onPressed: () {
+                        //print(titleInput);
+                        //print(amountInput);
+
+                        print(titleController.text);
+                        print(amountController.text);
+
+                      },
+                    )
                   ],
                 ),
               )),
@@ -83,31 +110,13 @@ class MyHomePage extends StatelessWidget {
                           color: Colors.purple,
                         ))),
                 Column(
-<<<<<<< HEAD
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                  Text(transaction.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold
-                  )),
-                  Text(
-                    DateFormat.yMMMd().format(transaction.date),
-                  style: TextStyle(
-                    color:Colors.grey
-                  )),
-                  Text("hello this is another text")
-                ])
-=======
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(transaction.title,
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       Text(DateFormat.yMMMd().format(transaction.date),
                           style: TextStyle(color: Colors.grey)),
-                      Text("sample text"),
-                      Text("another sample text")
                     ])
->>>>>>> 1a10190003461cbadec934286617a8da07cbab5b
               ]));
             }).toList(),
           )
