@@ -333,4 +333,4 @@ with torch.no_grad():
             correct +=1
         total += 1
 
-print(f"Accuracy: {round(correct/total, 3)}")
+print(f"Acc

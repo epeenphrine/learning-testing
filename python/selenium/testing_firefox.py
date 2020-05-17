@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 import time
 import os
-
+import platform
 ## make secrets.py with variable username and password 
 if os.path.exists("secrets.py"):
     import secrets 
@@ -17,11 +17,23 @@ if os.path.exists("secrets.py"):
     password = secrets.password
 else: 
     print("no secrets provided")
+print(platform.system())
+
+if str(platform.system()) == "Linux":
+    print(f"running on {platform.system()}")
+    gecko_driver_path = "./geckodriver"
+
+elif str(platform.system()) == "Windows":
+    print(f"running on {platform.system()}")
+    gecko_driver_path = "./geckodriver.exe"
+else: 
+    print("are you using a mac?")
+
 # this setting works for indeed job application
 
 #firefox_path = "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
 
-gecko_driver_path = "C:\\Users\\dong\\Desktop\\repo\\learning_testing\\selenium\\geckodriver.exe"
+gecko_driver_path = "./geckodriver"
 options = webdriver.FirefoxOptions()
 
 #options.binary_location = firefox_path
