@@ -9,6 +9,7 @@ import (
 )
 
 func crawl () {
+	count := 0
 	c := colly.NewCollector(
 		// Visit only domains: hackerspaces.org, wiki.hackerspaces.org
 		colly.AllowedDomains("scholarships.com", "www.scholarships.com"),
@@ -25,12 +26,8 @@ func crawl () {
 	//request
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())
-	})
-
-	//response
-	c.OnResponse(func(r *colly.Response) {
-		url := r.Ctx.Get("url")
-		fmt.Println(url)
+		count +=1
+		fmt.Println(count)
 	})
 
 	//error handler
@@ -39,16 +36,16 @@ func crawl () {
 	})
 
 	
-	count := 0
 	// On every a element which has href attribute call callback
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
+		fmt.Println(count)
 		link := e.Attr("href")
 		// Print link
 		if strings.Contains(link, "/financial-aid/") {
 			fmt.Printf("Link found: %q -> %s\n", e.Text, link)
 			c.Visit(e.Request.AbsoluteURL(link))
-			count += 1
-			fmt.Println(count) 
+			//count += 1
+			//fmt.Println(count)
 		} else {
 			fmt.Println("not a good link")
 		}
@@ -74,29 +71,24 @@ func parse() {
 		colly.Async(true),
 	)
 
-	c.Visit("https://en.wikipedia.org/")
 
 	c.Limit(&colly.LimitRule{DomainGlob: "*", Parallelism:2})
 	// Find and visit all links
 
 	//find h1 element with class attribute
-	c.OnHTML("div[id]", func(e *colly.HTMLElement) {
+	c.OnHTML("span", func(e *colly.HTMLElement) {
+
 		//e.Attr gives value of whatever attribute
-		
-		id := e.Attr("id")
+		//link := e.Attr("href")
 		text := e.Text
 		//selecting attribute value 
+		//fmt.Println(text)
+			
+		//fmt.Println(link)
 
-		if id == "mp-tfa"{
-
-			//fmt.Printf("%T\n", id)	
-			//fmt.Printf("%T\n", text)
-
-			fmt.Println(id)
-			save(text)
-		}
-
-
+		//headlines := e.Text
+		//fmt.Println(headlines)
+		fmt.Println(text)
 		// printing Texts
 		//text := e.Text
 		//fmt.Println(text)
@@ -109,6 +101,7 @@ func parse() {
 		fmt.Println("Visiting", r.URL)
 	})
 
+	c.Visit("https://www.cnn.com/politics")
 	c.Wait()
 }
 
@@ -118,7 +111,6 @@ func save (s string) {
 }
 
 func main() {
-	//parse()
-	crawl()
-
+	parse()
+	//crawl()
 }

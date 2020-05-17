@@ -1,0 +1,2 @@
+cnn
+https://www.cnn.com/data/ocs/section/us/index.html:politics-zone-1/views/zones/common/zone-manager.izl
