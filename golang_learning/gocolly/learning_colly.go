@@ -16,13 +16,14 @@ func crawl () {
 		colly.MaxDepth(4),
 		colly.Async(true),
 		colly.UserAgent("Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6"),
-
 	)
+
 	c.Limit(&colly.LimitRule{
 		DomainGlob: "*", 
 		Parallelism: 4,
 		//Delay: 5*time.Second, 
 })
+
 	//request
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())
@@ -54,7 +55,6 @@ func crawl () {
 	})
 
 
-
 	// Before making a request print "Visiting ..."
 
 	// Start scraping on https://hackerspaces.org
@@ -75,9 +75,30 @@ func parse() {
 	c.Limit(&colly.LimitRule{DomainGlob: "*", Parallelism:2})
 	// Find and visit all links
 
-	//find h1 element with class attribute
-	c.OnHTML("span", func(e *colly.HTMLElement) {
+	//get html
+	//c.OnHTML("html", func(e *colly.HTMLElement) {
+		//text := e
+		//fmt.Println(text)
+	//})
 
+
+
+
+	c.OnRequest(func(r *colly.Request) {
+		fmt.Println("Visiting", r.URL)
+	})
+	c.OnResponse(func(r *colly.Response){
+		fmt.Println(r.StatusCode)
+		
+		//bodybytes := r.Body
+		//bodystring := string(bodybytes)
+		//fmt.Println(bodystring)
+
+	})
+
+	//testing out parsing
+
+	c.OnHTML("script", func(e *colly.HTMLElement) {
 		//e.Attr gives value of whatever attribute
 		//link := e.Attr("href")
 		text := e.Text
@@ -85,7 +106,6 @@ func parse() {
 		//fmt.Println(text)
 			
 		//fmt.Println(link)
-
 		//headlines := e.Text
 		//fmt.Println(headlines)
 		fmt.Println(text)
@@ -97,10 +117,6 @@ func parse() {
 		//e.Request.Visit(class)
 	})
 
-	c.OnRequest(func(r *colly.Request) {
-		fmt.Println("Visiting", r.URL)
-	})
-
 	c.Visit("https://www.cnn.com/politics")
 	c.Wait()
 }
@@ -110,7 +126,7 @@ func save (s string) {
 	fmt.Println(s)
 }
 
-func main() {
-	parse()
-	//crawl()
-}
+//func main() {
+	//parse()
+	////crawl()
+//}

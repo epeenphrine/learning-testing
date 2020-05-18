@@ -30,11 +30,3 @@ func python() {
 	log.Println(python.Run())
 
 }
-
-
-func main () {
-
-	python()
-	bash()
-
-}
