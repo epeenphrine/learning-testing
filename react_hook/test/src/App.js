@@ -7,6 +7,7 @@ import ExampleUseState from "./components/ExampleUseState/ExampleUseState";
 import ExampleUseEffect from "./components/ExampleUseEffect/ExampleUseEffect";
 import ExampleUseRef from "./components/ExampleUseRef/ExampleUseRef";
 import ExampleUseReducer from "./components/ExampleUseReducer/ExampleUseReducer";
+// in vsc the command for commenting and uncommenting lines of codes is ctrl + /  
 function App() {
   return (
     <div className="App">
@@ -15,7 +16,7 @@ function App() {
         {/* <ExampleUseState /> */}
         {/* <ExampleUseEffect /> */}
         {/* <ExampleUseRef /> */}
-        <ExampleUseReducer />
+        {/* <ExampleUseReducer /> */}
       </React.Fragment>
     </div>
   );
